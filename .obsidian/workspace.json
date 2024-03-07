@@ -1,0 +1,190 @@
+{
+  "main": {
+    "id": "66609dacb47b3eb2",
+    "type": "split",
+    "children": [
+      {
+        "id": "d81bea9efe9a9810",
+        "type": "tabs",
+        "dimension": 59.59044368600682,
+        "children": [
+          {
+            "id": "173568e0f7eac96e",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "week1-2 实验安排及python基础.pdf"
+              }
+            }
+          },
+          {
+            "id": "0163186fd660ed85",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "lab1/Lab1_Report.md.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      },
+      {
+        "id": "d787c381168f4723",
+        "type": "tabs",
+        "dimension": 40.40955631399317,
+        "children": [
+          {
+            "id": "5d4a4880f9498c50",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "week1-2 实验安排及python基础.pdf"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9df3cacac58333c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "91014aa842cc84fc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "091c24446d5d5680",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9d8f548d98bef0df",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "a6a9b4a00467767e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          },
+          {
+            "id": "e645da605d90265f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "lab1/Lab1_Report.md.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200.5
+  },
+  "right": {
+    "id": "4e1227096c85d7d2",
+    "type": "split",
+    "children": [
+      {
+        "id": "a6f469a8ee917ae5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7fd65a0b4f3654f2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "lab1/Lab1_Report.md.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "d82d50ef72791483",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "lab1/Lab1_Report.md.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "1f84587274a5ab9b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "0163186fd660ed85",
+  "lastOpenFiles": [
+    "Appendix/Screenshot 2024-03-07 at 11.46.51.png",
+    "Appendix/Screenshot 2024-03-07 at 11.25.03.png",
+    "Appendix",
+    "week1-2 实验安排及python基础.pdf",
+    "lab1/Lab1_Report.md.md",
+    "report_module.md.md",
+    "实验报告编写建议.pdf",
+    "README.md"
+  ]
+}
