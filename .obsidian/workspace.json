@@ -4,47 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "d81bea9efe9a9810",
+        "id": "91615216d17e3eef",
         "type": "tabs",
-        "dimension": 59.59044368600682,
         "children": [
           {
-            "id": "173568e0f7eac96e",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "week1-2 实验安排及python基础.pdf"
-              }
-            }
-          },
-          {
-            "id": "0163186fd660ed85",
+            "id": "25d01e3bccccbbe1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lab1/Lab1_Report.md.md",
+                "file": "lab1/Lab1_Report.md",
                 "mode": "source",
                 "source": false
-              }
-            }
-          }
-        ],
-        "currentTab": 1
-      },
-      {
-        "id": "d787c381168f4723",
-        "type": "tabs",
-        "dimension": 40.40955631399317,
-        "children": [
-          {
-            "id": "5d4a4880f9498c50",
-            "type": "leaf",
-            "state": {
-              "type": "pdf",
-              "state": {
-                "file": "week1-2 实验安排及python基础.pdf"
               }
             }
           }
@@ -100,7 +71,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "lab1/Lab1_Report.md.md"
+                "file": "lab1/Lab1_Report.md"
               }
             }
           }
@@ -124,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "lab1/Lab1_Report.md.md",
+                "file": "lab1/Lab1_Report.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -141,7 +112,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "lab1/Lab1_Report.md.md",
+                "file": "lab1/Lab1_Report.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -176,15 +147,25 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0163186fd660ed85",
+  "active": "091c24446d5d5680",
   "lastOpenFiles": [
+    "To_Submit",
+    "To_Submit/E1_22336018/Report.pdf",
+    "lab1/Lab1_Report.md",
+    "lab1/week1-2 实验安排及python基础.pdf",
+    "Materials/report_module.md.md",
+    "Materials/人工智能实验报告模板.docx",
+    "E1_22336018.zip",
+    "To_Submit/E1_22336018/code/main.py",
+    "To_Submit/E1_22336018/code",
+    "E1_22336018/untitled folder",
+    "lab1/Lab1_Report.md.md",
+    "Materials",
+    "E1_22336018/Report.md",
+    "To_Submit/E1_22336018",
     "Appendix/Screenshot 2024-03-07 at 11.46.51.png",
     "Appendix/Screenshot 2024-03-07 at 11.25.03.png",
     "Appendix",
-    "week1-2 实验安排及python基础.pdf",
-    "lab1/Lab1_Report.md.md",
-    "report_module.md.md",
-    "实验报告编写建议.pdf",
     "README.md"
   ]
 }
