@@ -7,24 +7,41 @@ class Predicate:
         self.arguments = arguments
         self.negated = negated
     def print_predicate(self):
-        print("name: ", self.name)
-        print("argument list: ", self.arguments)
-        print("Negated or not: ", self.negated)
+        # print("name: ", self.name)
+        # print("argument list: ", self.arguments)
+        # print("Negated or not: ", self.negated)
+        output = ""
+        if self.negated:
+            output += "¬"
+        output += self.name + "("
+        for argument in self.arguments:
+            output += argument
+            if argument is not self.arguments[-1]:
+                output += ", "
+        output += ")"
+        return output
     
 class Clause:
     def __init__(self, predicates):
         self.predicates = predicates # It is a LIST of predicate above
 
-    def print_clause(self):
-        num = len(self.predicates)
-        for i in range(num):
-            print("Predicate", i+1, ":")
-            self.predicates[i].print_predicate()
-            print("-------------------")
-    
-    def print_user_view(self):
-        # TODO
-        return []
+    def print_clauses(self, direct = True):
+        if len(self.predicates) == 1:
+            if direct is not False:
+                print(self.predicates[0].print_predicate())
+            return 
+        output = "( "
+        for predicate in self.predicates:
+            output += predicate.print_predicate()
+            if predicate is not self.predicates[-1]:
+                output += ", "
+        output += " )"
+        if direct is not False:
+            print(output)
+        return output
+            
+            
+
 
 def parse_predicate(predicate_str):
     """Parses a single predicate string into a Predicate object."""
@@ -57,29 +74,86 @@ def parse_input(input_text):
     predicates = [parse_predicate(predicate_str) for predicate_str in predicates_str]
     return Clause(predicates)
 
+def int_to_char(n, lower_case=True):
+    if lower_case:
+        return chr(n + 97)  # 返回小写字母
+    else:
+        return chr(n + 65)  # 返回大写字母
 
-
-
-def unify(predicates1, predicates2):
-    # Input 2 predicates
-    # Output a substitution if successful unified
-    pass
-
-def resolve(clause1, clause2):
+def resolve(KB, clause1, clause2, predicate1, predicate2):
     # Input 2 clauses
     # Output a new clause if successful
-    pass
-def MGB(KB):
-    # find 1 compatible replace rule. If so, return true, else return false
-    # The same predicate, with different value
-    # ITS A TREE!
+    index1 = ""
+    index2 = ""
+    for i in range(len(KB)):
+        if KB[i] is clause1:
+            index1 += str(i+1)
+            for j in range(len(clause1.predicates)):
+                if clause1.predicates[j] is predicate1:
+                    index1 += int_to_char(j)
+        if KB[i] is clause2:
+            index2 += str(i+1)
+            for j in range(len(clause2.predicates)):
+                if clause2.predicates[j] is predicate2:
+                    index2 += int_to_char(j)
+    dic = {}
+    for i in range(len(predicate1.arguments)):
+        dic[predicate1.arguments[i]] = predicate2.arguments[i]
+    clause1.predicates.remove(predicate1)
+    clause2.predicates.remove(predicate2)
+    for predicate in clause2.predicates:
+        clause1.predicates.append(predicate)
+    for predicate in clause1.predicates:
+        for key,value in dic.items():
+            predicate.arguments = [key if arg == value else arg for arg in predicate.arguments]
+    KB.remove(clause2)
+    
+    for clause in KB:
+        if len(clause.predicates) == 0:
+            KB.remove(clause)
+
+    info = "R[" + index1 + "," + index2 + "]"
+    for key, value in dic.items():
+        info += ("(" + key + "=" + value + ")")
+    info += " => " + str(clause1.print_clauses(direct = False))
+    print(info)
+
+
+def is_match(predicate1, predicate2):
+    return predicate1.name == predicate2.name and predicate1.negated != predicate2.negated
+
+def find_clause2(clause1, KB):
+    for predicate1 in clause1.predicates:
+        for clause2 in KB:
+            for predicate2 in clause2.predicates:
+                if is_match(predicate1, predicate2):
+                    resolve(KB, clause1, clause2, predicate1, predicate2)
+                    return True
+    return False
+
+def debug_info(KB):
+    print("\n----------Debug Info------------")
+    print("Number of clause in KB: ", len(KB))
+    count = 1
+    for clause in KB:
+        print("Clause:", count,"\t",sep="",end="")
+        count = count+1
+        clause.print_clauses()
+    print("---------------------------------\n")
 
 def resolution_algorithm(KB):
     # Main loop here
     goal_test = False
     while True:
-        # find 2 same 
-        goal_test = not MGB(KB)
+        for clause1 in KB:
+            goal_test = find_clause2(clause1, KB)
+            if goal_test == True:
+                debug_info(KB)
+                break
+        if goal_test is False:
+            break
+            
+
         
 
 
@@ -93,8 +167,6 @@ def main():
         clause.print_clause()
     # Turn all the input string to clauses object, and each clauses is consisted of predicates.
 
-def test1():
-    test = parse_input("(¬C(y), ¬L(y, rain))")
-    test.print_clause()
+if __name__ == "__main__":
+    main()
 
-main()
