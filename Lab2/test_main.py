@@ -30,7 +30,7 @@ Green(aa)
 (¬On(x, y), ¬Green(x), Green(y))
 """
 
-    input_text = input_text2.strip().split("\n")[1:]
+    input_text = input_text1.strip().split("\n")[1:]
     print("Input data: ",input_text, sep="\n")
 
     KB = []
@@ -45,20 +45,23 @@ Green(aa)
     print("\nLoad finished, processing...\n")
     logic.resolution_algorithm(KB, debug = True)
 
-    print("\nProcessing ends and below is the result.")
-    print("Here is your knowledge in the end:")
-    print("Number of clauses in KB: ", len(KB),"\n")
-    count = 1
-    for clause in KB:
-        print("Clause:", count,"\t",sep="",end="")
-        count = count+1
-        clause.print_clause()
-
-    if len(KB) != 0:
-        print("\nSo SATISFY\n")
-    else:
-        print("\nSO NOT SATISFY\n")
-    
     print("Excaution is finished, quitting...")
 
+
+
+import main as logic
+
+def test_deepcopy():
+    """Test the deepcopy method of the Predicate class."""
+    # Create a Predicate object
+    predicate = logic.Predicate("A", ["x", "y"], True)
+
+    # Perform a deep copy of the Predicate object
+    print(predicate.print_predicate())
+    copied_predicate = predicate.clone()
+    copied_predicate.arguments[0] = "z"
+    print(predicate.print_predicate())
+    print(copied_predicate.print_predicate())
+
+#test_deepcopy()
 test2()

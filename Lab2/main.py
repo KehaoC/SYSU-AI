@@ -1,4 +1,5 @@
 import re
+import copy
 
 class Predicate:
     def __init__(self, name, arguments, negated=False):
@@ -17,9 +18,18 @@ class Predicate:
                 output += ", "
         output += ")"
         return output
+    def deepcopy(self):
+        """Create a deep copy of the Predicate instance."""
+        return Predicate(copy.deepcopy(self.name),
+                         copy.deepcopy(self.arguments),
+                         copy.deepcopy(self.negated))
+    def __eq__(self, __value: object) -> bool:
+        if self.name == __value.name and self.arguments == __value.arguments and self.negated == __value.negated:
+            return True
+        return False
     
 class Clause:
-    def __init__(self, predicates):
+    def __init__(self, predicates = []):
         self.predicates = predicates # It is a LIST of predicate above
 
     def print_clause(self, direct = True):
@@ -37,6 +47,16 @@ class Clause:
         if direct is not False:
             print(output)
         return output
+    def deepcopy(self):
+        predicates = [predicate.deepcopy() for predicate in self.predicates]
+        return Clause(predicates)
+    def __eq__(self, other):
+        if len(self.predicates) != len(other.predicates):
+            return False
+        for predicate in self.predicates:
+            if predicate not in other.predicates:
+                return False
+        return True
             
 def parse_predicate(predicate_str):
     """Parses a single predicate string into a Predicate object."""
@@ -76,82 +96,54 @@ def int_to_char(n, lower_case=True):
     else:
         return chr(n + 65)  # 返回大写字母
 
-def resolve(KB, clause1, clause2, predicate1, predicate2, visited):
-    # Input 2 clauses
-    # Output a new clause if successful
-    index1 = ""
-    index2 = ""
-    for i, c in enumerate(KB):
-        if c is clause1:
-            index1 += str(i+1)
-            for j, p in enumerate(clause1.predicates):
-                if p is predicate1:
-                    index1 += int_to_char(j)
-        if c is clause2:
-            index2 += str(i+1)
-            for j, p in enumerate(clause2.predicates):
-                if p is predicate2:
-                    index2 += int_to_char(j)
-    dic = {}
-    replacable = True
-    for i in range(len(predicate1.arguments)):
-        if len(predicate1.arguments[i]) != 1 and len(predicate2.arguments[i]) != 1:
-            replacable = False
-            break
-        if len(predicate1.arguments[i]) == 1:
-            dic[predicate1.arguments[i]] = predicate2.arguments[i]
-        else:
-            dic[predicate2.arguments[i]] = predicate1.arguments[i]
+def resolve(clause1, clause2, predicate1, predicate2, replace):
+    new_clause = Clause([])
+    for predicate in clause1.predicates:
+        if predicate != predicate1:
+            new_clause.predicates.append(predicate.deepcopy())
+    for predicate in clause2.predicates:
+        if predicate != predicate2:
+            new_clause.predicates.append(predicate.deepcopy())
 
-    signal = (index1, index2)
-    if not replacable or signal in visited:
-        return
-    else:
-        visited.append(signal)
-        new_clause = Clause(clause1.predicates + clause2.predicates)
-        new_clause.predicates.remove(predicate1)
-        new_clause.predicates.remove(predicate2)
-        KB.append(new_clause)
+    for key, value in replace.items():
         for predicate in new_clause.predicates:
-            for key, value in dic.items():
-                predicate.arguments = [value if arg == key else arg for arg in predicate.arguments]
-    info = f"R[{index1},{index2}]"
-    for key, value in dic.items():
-        info += f"({key}={value})"
-    info += f" => {new_clause.print_clause(direct=False)}"
-    print(info)
-    # clause1.predicates.remove(predicate1)
-    # clause2.predicates.remove(predicate2)
-    # clause1.predicates.extend(clause2.predicates)
-    # for predicate in clause1.predicates:
-    #     for key, value in dic.items():
-    #         predicate.arguments = [key if arg == value else arg for arg in predicate.arguments]
-    # KB.remove(clause2)
-    
-    # # KB = [c for c in KB if len(c.predicates) > 0]
-    # for clause in KB:
-    #     if clause.predicates == []:
-    #         KB.remove(clause)
+            for i in range(len(predicate.arguments)):
+                if predicate.arguments[i] == key:
+                    predicate.arguments[i] = value
+    # TODO去重
+    while True:
+        find = False
+        for i in range(len(new_clause.predicates)):
+            for j in range(i+1, len(new_clause.predicates)):
+                if new_clause.predicates[i] == new_clause.predicates[j]:
+                    del new_clause.predicates[j]
+                    find = True
+                    break
+            break
+        if find == False:
+            break
+    return new_clause
 
-    # info = f"R[{index1},{index2}]"
-    # for key, value in dic.items():
-    #     info += f"({key}={value})"
-    # info += f" => {clause1.print_clause(direct=False)}"
-    # print(info)
-
+def MGU(predicate1, predicate2):
+    dic = {} # x = aa key is x, value is aa, 
+    for argument1, argument2 in zip(predicate1.arguments, predicate2.arguments):
+        if len(argument1) == 1 and len(argument2) == 1:
+            dic[argument1] = argument2
+        elif len(argument1) == 1 and len(argument2) != 1: 
+            dic[argument1] = argument2
+        elif len(argument1) != 1 and len(argument2) == 1:
+            dic[argument2] = argument1
+        elif len(argument1) != 1 and len(argument2) != 1 and argument1 != argument2:
+            return False
+    return dic
 
 def is_match(predicate1, predicate2):
-    return predicate1.name == predicate2.name and predicate1.negated != predicate2.negated
-
-def find_clause2(clause1, KB, visited):
-    for predicate1 in clause1.predicates:
-        for clause2 in KB:
-            for predicate2 in clause2.predicates:
-                if is_match(predicate1, predicate2):
-                    resolve(KB, clause1, clause2, predicate1, predicate2, visited)
-                    return True
+    if predicate1.name == predicate2.name and predicate1.negated != predicate2.negated:
+        for argument1, argument2 in zip(predicate1.arguments, predicate2.arguments):
+            if len(argument1) != 1 and len(argument2) != 1 and argument1 != argument2:
+                return False
+        return True
     return False
-
 def debug_info(KB):
     print("\n----------Debug Info------------")
     print("Number of clause in KB: ", len(KB))
@@ -162,34 +154,59 @@ def debug_info(KB):
         clause.print_clause()
     print("---------------------------------\n")
 
-def resolution_algorithm(KB, debug = False):
-    # Main loop here
-    goal_test = False
+def display_info(new_clause, replace, signal):
+    # [2a, 5a](bb:x) => (¬Green(aa), Green(bb))
+    info = "[" + signal + "]"
+    for key, value in replace.items():
+        info += "(" + key + "=" + value + ")"
+    info += " => "
+    print(info, end="")
+    new_clause.print_clause()
+def resolution_algorithm(KB, debug = False): #TODO 为什么过了一个循环之后，A(tony)就变成负的了
     visited = []
+    goal_test = False
     while True:
-        for clause1 in KB:
-            goal_test = find_clause2(clause1, KB, visited) # TODO Find the same all the time
-            if goal_test == True:
-                if debug:
-                    debug_info(KB)
-                break
-        if goal_test is False:
+        if goal_test ==True:
             break
+        # 1. Select two clauses to resolve
+        find = False
+        for i in range(len(KB)):
+            for j in range(i+1, len(KB)):
+                clause1 = KB[i]
+                clause2 = KB[j]
+                for index1, predicate1 in enumerate(clause1.predicates):
+                    for index2, predicate2 in enumerate(clause2.predicates):
+                        signal = str(i+1) + int_to_char(index1) +", " +str(j+1) + int_to_char(index2)
+                        if is_match(predicate1, predicate2) and signal not in visited:
+                            replace = MGU(predicate1, predicate2)
+                            if replace != False:
+                                visited.append(signal)
+                                find = True
+                                new_clause = resolve(clause1, clause2, predicate1, predicate2, replace)
+                                if debug:
+                                    debug_info(KB)
+                                display_info(new_clause, replace, signal)
+                                if len(new_clause.predicates) == 0:
+                                    goal_test = True
+                                    break
+                                # KB.append(new_clause)
+                                if new_clause not in KB:
+                                    KB.append(new_clause)
+                            if find == True:
+                                break
+                        if find == True:
+                            break
+                    if find == True:
+                        break
+                if find == True:
+                    break
+            if find == True:
+                break
+        if find == False:
+            break
+    if goal_test == True:
+        print("\nSo SATISFY\n")
+    else:
+        print("\nSO NOT SATISFY\n")
             
-
         
-
-
-def main():
-    clauses_num = int(input())
-    KB = []
-    for i in range(clauses_num):
-        input_text = input()
-        KB.append(parse_input(input_text))
-    for clause in KB:
-        clause.print_clause()
-    # Turn all the input string to clauses object, and each clauses is consisted of predicates.
-
-if __name__ == "__main__":
-    main()
-
