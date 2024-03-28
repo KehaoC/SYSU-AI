@@ -43,7 +43,7 @@ Green(aa)
         clause.print_clause()
     
     print("\nLoad finished, processing...\n")
-    logic.resolution_algorithm(KB, debug = True)
+    logic.resolution_algorithm(KB, debug = False)
 
     print("Excaution is finished, quitting...")
 
